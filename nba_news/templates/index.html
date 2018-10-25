@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block scripts %}
+    <script type="text/javascript">
+        window.onload = function() {
+            var handler = function(){
+                // TODO
+                console.log("check new data and then update");
+            }
+            var timer = setInterval( handler , 60 * 1000);
+            var clear = function(){
+                clearInterval(timer);
+            }
+            fetch_news()
+        }
+        function fetch_news(id = "") {
+            $.ajax({
+                url: '/api/posts/' + id,
+                dataType: 'json',
+                type: 'GET',
+                success: function (json) {
+                    console.log(json);
+                    if (id == "") {
+                        render_html(json)
+                    }
+                    else {
+                        render_news(json);
+                    }                
+                }
+            });
+        }
+        function render_html(json) {
+            
+            news_list = document.getElementById('news_list');
+            for (i = 0; i < json.results.length; i++) {
+                data = json.results[i];
+                html = 
+                    '<div class="col-md-3">' +
+                        '<div class="card">' + 
+                            '<img class="card-img-top" src="' + data.image_url + '">' +
+                            '<div class="card-body">' + 
+                                '<h5 class="card-title">' + 
+                                    data.title + 
+                                '</h5>' +
+                                '<a class="btn btn btn-outline-primary"' + 'onclick="create_news_modal(' + data.id + ')"' + '>Read More</a>' + 
+                            '</div>' +
+                        '</div>' +
+                    '</div>'
+                news_list.innerHTML += html
+            }
+        }
+        function render_news(json) {
+            modal_new_title = document.getElementById('news_title');
+            modal_new_title.innerHTML = json.title;
+            modal_new_img = document.getElementById('news_img');
+            modal_new_img.setAttribute("src", json.image_url);
+            modal_new = document.getElementById('news_body');
+            modal_new.innerHTML = json.content;
+        }
+        
+        function create_news_modal(id) {
+            fetch_news(id);
+            
+            $('#newsModal').modal('show');
+        }
+    </script>
+{% endblock %}
+
+{% block content %}
+    <div class="row", id="news_list">
+    </div>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="newsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="news_title">Detail</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <img src="" id="news_img" style="width: 400px; height: 264px;" >
+                <div id="news_body"></div>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        </div>
+    </div>
+{% endblock %}
