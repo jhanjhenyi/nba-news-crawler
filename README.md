@@ -1,6 +1,6 @@
 # NBA News Crawler
 
-[NBA 台灣 | 聯合新聞網](]https://nba.udn.com/nba/index) 的焦點新聞爬蟲實作
+[NBA 台灣 | 聯合新聞網](https://nba.udn.com/nba/index) 的焦點新聞爬蟲實作
 
 ![](images/nba_news.png)
 
