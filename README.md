@@ -34,4 +34,6 @@ Save Completed.
 ```
 
 ## 預計
-- 
+
+- 加入排程程式
+- 部署到 Heroku
