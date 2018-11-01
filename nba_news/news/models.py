@@ -7,6 +7,7 @@ class Post(models.Model):
     title = models.CharField(max_length=50)
     content = models.TextField()
     image_url = models.URLField()
+    publish_date = models.DateTimeField()
     source_url = models.URLField()
     create_date = models.DateTimeField(auto_now_add=True)
 

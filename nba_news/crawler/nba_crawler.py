@@ -63,6 +63,8 @@ def get_news(pages: int = 10):
 
             post_title = story_body_content.find(
                 'h1.story_art_title', first=True).text
+            post_date = story_body_content.find(
+                'div.shareBar__info--author > span', first=True).full_text
             post_image_url = story_body_content.find(
                 'figure.photo_center > a > img', first=True).attrs['data-src']
 
@@ -75,10 +77,12 @@ def get_news(pages: int = 10):
                 title=post_title,
                 content=post_content,
                 image_url=post_image_url,
+                publish_date=post_date,
                 source_url=post_source_url
             ))
-            print(f"{post_id} {post_title} ok.")
-        except:
+            print(f"{post_id} {post_title} {post_date} ok.")
+        except Exception as e:
+            print(e)
             continue
 
     Post.objects.bulk_create(post_list)
