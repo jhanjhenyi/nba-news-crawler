@@ -4,12 +4,16 @@
 
 ![](images/nba_news.png)
 
+前端嘗試不使用 jQuery，僅用 Bootstrap CSS 跟 Font Awesome 的 icons 來實作，但前端不是我的重點，有時間再來重構（？
+
 ## 使用到的東西
 
 - [Python 3.7](https://www.python.org/)
 - [Django](https://www.djangoproject.com/)
 - [Django REST framework](https://www.django-rest-framework.org/)
 - [Requests-HTML](https://html.python-requests.org/)
+- [Bootstrap](https://getbootstrap.com/)
+- [Font Awesome](https://fontawesome.com/)
 
 ## 爬蟲
 
