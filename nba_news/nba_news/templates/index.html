@@ -33,7 +33,7 @@
         function render_news_html(news_data) {
             console.log(news_data);
 
-            var div_news_list = document.getElementById("news_list");
+            var div_news_list = document.getElementById("divNewsList");
 
             // Create card div container
             var container = document.createElement("div");
@@ -46,17 +46,35 @@
             card_img.classList.add("card-img-top");
             card_img.setAttribute("src", news_data.image_url);
             card_img.setAttribute("style", "height: 180px; width: 100%;");
-            // Body
+            // body
             var card_body = document.createElement("div");
             card_body.classList.add("card-body");
+            // time
+            var card_text_time = document.createElement("p");
+            card_text_time.classList.add("card-text");
+            var small_text = document.createElement("small");
+            small_text.innerText = 
+                new Date(news_data.publish_date).toLocaleString();
+            card_text_time.append(small_text);
             // title
             var card_title = document.createElement("h5");
             card_title.classList.add("card-title");
             card_title.innerText = news_data.title;
+            // button
+            var card_button = document.createElement("a");
+            card_button.classList.add("btn");
+            card_button.classList.add("btn-outline-dark");
+            card_button.innerText = "Read More";
+            // card_button.setAttribute("href", news_data.source_url);
+            card_button.onclick = function () {
+                show_modal(news_data);
+            };
             
             card.append(card_img);
 
+            card_body.append(card_text_time);
             card_body.append(card_title);
+            card_body.append(card_button);
             card.append(card_body);
 
             container.append(card);
@@ -65,22 +83,84 @@
         }
 
         function load_next_news_list() {
-            alert("Waiting...");
+            fetch(next_url)
+                .then(function (response) {
+                    return response.json()
+                }).then(function (json) {
+                    next_url = json.next;
+                    render_news_list(json.results);
+
+                    if (next_url == null || next_url == "") {
+                        var btn_load = document.getElementById("btnLoad");
+                        btn_load.style.display = "none";
+                    }
+                }).catch(function (ex) {
+                    console.log(ex);
+                });
         }
 
+        function show_modal(modalData) {
+            var modal_title = document.getElementById('modalTitle');
+            modal_title.innerText = modalData.title;
+
+            var modal_body = document.getElementById('modalBody');
+            modal_body.innerText = "";
+            var modal_img = document.createElement("img");
+            modal_img.setAttribute("src", modalData.image_url);
+            modal_img.setAttribute("style", "height: auto; width: 100%;");
+            modal_body.append(modal_img);
+            var modal_content = document.createElement("p");
+            modal_content.innerText = modalData.content
+            modal_body.append(modal_content);
+
+            var modal = document.getElementById('divModal');
+            modal.style.display = "block";
+        }
+
+        function close_modal() {
+            var modal = document.getElementById('divModal');
+            modal.style.display = "none";
+        }
     </script>
 {% endblock %}
 
 {% block content %}
-    <div class="row" id="news_list"></div>
+    <div class="row" id="divNewsList"></div>
     <div class="row">
         <div class="col-md-12">
             <button 
                 type="button"
+                id="btnLoad"
                 class="btn btn-light btn-lg btn-block"
                 onclick="load_next_news_list()">
                 More
             </button>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="divModal" style="display: none; overflow: auto;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">Modal title</h5>
+                    <button 
+                        type="button" 
+                        class="close"
+                        onclick="close_modal()">
+                        &times;
+                    </button>
+                </div>
+                <div class="modal-body" id="modalBody"></div>
+                <div class="modal-footer">
+                    <button 
+                        type="button" 
+                        class="btn btn-secondary"
+                        onclick="close_modal()">
+                        Close
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}
