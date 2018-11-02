@@ -82,6 +82,7 @@
             div_news_list.append(container);
         }
 
+        // Fetch next api to get news list
         function load_next_news_list() {
             fetch(next_url)
                 .then(function (response) {
@@ -99,12 +100,18 @@
                 });
         }
 
+        // Show modal with data
         function show_modal(modalData) {
+            // title
             var modal_title = document.getElementById('modalTitle');
             modal_title.innerText = modalData.title;
-
+            // body
             var modal_body = document.getElementById('modalBody');
             modal_body.innerText = "";
+            var modal_date = document.createElement("p");
+            modal_date.innerText = 
+                new Date(modalData.publish_date).toLocaleString();
+            modal_body.append(modal_date);
             var modal_img = document.createElement("img");
             modal_img.setAttribute("src", modalData.image_url);
             modal_img.setAttribute("style", "height: auto; width: 100%;");
@@ -112,15 +119,25 @@
             var modal_content = document.createElement("p");
             modal_content.innerText = modalData.content
             modal_body.append(modal_content);
+            var modal_source = document.createElement("p");
+            var source = document.createElement("a");
+            source.setAttribute("href", modalData.source_url);
+            source.setAttribute("target", "_blank");
+            source.innerText = modalData.source_url;
+            modal_source.innerText = "Source : ";
+            modal_source.append(source);
+            modal_body.append(modal_source);
 
             var modal = document.getElementById('divModal');
             modal.style.display = "block";
         }
 
+        // Close modal
         function close_modal() {
             var modal = document.getElementById('divModal');
             modal.style.display = "none";
         }
+
     </script>
 {% endblock %}
 
