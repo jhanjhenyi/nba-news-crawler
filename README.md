@@ -25,4 +25,6 @@
 
 ## 爬蟲
 
+因為是練習用，因此爬蟲預設只爬十頁
+
 爬蟲程式是透過 [schedule](https://github.com/dbader/schedule) 來進行排程，之後再試看看 Celery 或 Django Q
