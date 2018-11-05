@@ -95,6 +95,8 @@ def get_news(pages: int = 10):
     print("-----Crawler End-----")
 
 if __name__ == "__main__":
+    get_news()
+    
     print("schedule on")
     schedule.every(30).minutes.do(get_news)
     while True:
