@@ -97,4 +97,5 @@ if __name__ == "__main__":
     while True:
         print("-----Crawler Start-----")
         schedule.run_pending()
+        time.sleep(1)
         print("-----Crawler End-----")
