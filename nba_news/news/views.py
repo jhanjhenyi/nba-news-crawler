@@ -5,5 +5,5 @@ from .serializers import PostSerializer
 
 
 class PostViewSet(viewsets.ModelViewSet):
-    queryset = Post.objects.all()
+    queryset = Post.objects.order_by('-publish_date')
     serializer_class = PostSerializer
