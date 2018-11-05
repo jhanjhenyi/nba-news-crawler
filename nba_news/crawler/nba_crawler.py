@@ -22,6 +22,8 @@ session = HTMLSession()
 
 def get_news(pages: int = 10):
 
+    print("-----Crawler Start-----")
+
     url_base = "https://nba.udn.com/"
     headers = {
         'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:61.0) Gecko/20100101 Firefox/61.0"
@@ -90,12 +92,12 @@ def get_news(pages: int = 10):
 
     Post.objects.bulk_create(post_list)
     print("Save Completed.")
+    print("-----Crawler End-----")
 
 if __name__ == "__main__":
-    print("crawler on")
+    print("schedule on")
     schedule.every(30).minutes.do(get_news)
     while True:
-        print("-----Crawler Start-----")
+        print("waiting......")
         schedule.run_pending()
         time.sleep(1)
-        print("-----Crawler End-----")
