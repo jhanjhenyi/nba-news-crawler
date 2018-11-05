@@ -10,7 +10,10 @@ sys.path.append(PROJECT_DIR)
 
 application = get_wsgi_application()
 
+import time
+
 from requests_html import HTMLSession, HTML
+import schedule
 
 from news.models import *
 
@@ -89,6 +92,9 @@ def get_news(pages: int = 10):
     print("Save Completed.")
 
 if __name__ == "__main__":
-    print("-----Crawler Start-----")
-    get_news()
-    print("-----Crawler End-----")
+    print("crawler on")
+    schedule.every(30).minutes.do(get_news)
+    while True:
+        print("-----Crawler Start-----")
+        schedule.run_pending()
+        print("-----Crawler End-----")
